@@ -1,6 +1,7 @@
 import boto3
 from fastapi import FastAPI,Form,File,UploadFile
 import json
+from fastapi.middleware.cors import CORSMiddleware
 from random import randint
 from pprint import pprint
 from parsers import(
@@ -17,10 +18,19 @@ from parsers import(
 
 
 app = FastAPI()
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/test/")
 async def root():
-    return {"message": "Hello World"}
+    return {"message": "Hello Worlds"}
 
 
 # s3 = boto3.resource(
