@@ -18,9 +18,9 @@ from parsers import(
 
 app = FastAPI()
 
-# @app.get("/")
-# async def root():
-#     return {"message": "Hello World"}
+@app.get("/test/")
+async def root():
+    return {"message": "Hello World"}
 
 
 # s3 = boto3.resource(
@@ -83,7 +83,7 @@ async def create_upload_file(file: UploadFile = File(...)):
             value['table']=table
             value['final_map']=final_map
             value['raw_text']=raw_text
-            value['key_map']=key_map  
+            #value['key_map']=key_map  
             value["value_map"]=value_map
             return(value)        
             # metadaat=[json.dumps(table),json.dumps(final_map),raw_text]
