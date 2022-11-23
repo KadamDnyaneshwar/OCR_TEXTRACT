@@ -21,12 +21,16 @@ def map_word_id(response):
 
 
 def extract_table_info(response, word_map):
+    #print(response)
+    #print(word_map)
     row = []
     table = {}
     ri = 0
     flag = False
 
     for block in response["Blocks"]:
+        #print(block)
+      
         if block["BlockType"] == "TABLE":
             key = f"table_{uuid.uuid4().hex}"
             table_n = +1
@@ -40,8 +44,10 @@ def extract_table_info(response, word_map):
 
             if "Relationships" in block:
                 for relation in block["Relationships"]:
+
                     if relation["Type"] == "CHILD":
                         row.append(" ".join([word_map[i] for i in relation["Ids"]]))
+                   
             else:
                 row.append(" ")
 
@@ -49,6 +55,7 @@ def extract_table_info(response, word_map):
                 temp_table.append(row)
                 table[key] = temp_table
                 flag = False
+            #print(temp_table)
     return table
 
 

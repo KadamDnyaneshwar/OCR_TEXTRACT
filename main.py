@@ -2,7 +2,7 @@ import boto3
 from fastapi import FastAPI,Form,File,UploadFile
 import json
 from random import randint
-#import pprin
+from pprint import pprint
 from parsers import(
     extract_text,
     map_word_id,
@@ -58,13 +58,15 @@ async def create_upload_file(file: UploadFile = File(...)):
             img = await file.read()
 
         # Call Amazon Textract
-            response = client.detect_document_text(
-                Document={'Bytes': img}
-                )
+            # response = client.analysize_documents(
+            #     Document={'Bytes': img}
+            #     )
     
-            response = client.detect_document_text(
-                Document={'Bytes': img}
+            response = client.analyze_document(
+                Document={'Bytes': img},
+                FeatureTypes=["FORMS","TABLES"]
                 )
+            
             raw_text =extract_text(response,extract_by="LINE")
             word_map = map_word_id(response)
             table = extract_table_info(response, word_map)
@@ -78,10 +80,11 @@ async def create_upload_file(file: UploadFile = File(...)):
             # print(raw_text)
   
             value=dict()
-            value['table']=json.dumps(table)
+            value['table']=table
             value['final_map']=final_map
-            value['raw_text']=raw_text  
-            value['key_map']=key_map
+            value['raw_text']=raw_text
+            value['key_map']=key_map  
+            value["value_map"]=value_map
             return(value)        
             # metadaat=[json.dumps(table),json.dumps(final_map),raw_text]
             # return metadaat
