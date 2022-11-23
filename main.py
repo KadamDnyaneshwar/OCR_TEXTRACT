@@ -18,7 +18,13 @@ from parsers import(
 
 
 app = FastAPI()
-origins = ["*"]
+origins =  [
+    "https://ocr.pinnacleit.co.in/file/",
+    "https://ocr.pinnacleit.co.in/test/",
+    "http://localhost",
+    "http://localhost:8000",
+  
+]
 
 app.add_middleware(
     CORSMiddleware,
@@ -27,6 +33,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 @app.get("/test/")
 async def root():
