@@ -18,13 +18,7 @@ from parsers import(
 
 
 app = FastAPI()
-origins =  [
-    "https://ocr.pinnacleit.co.in/file/",
-    "https://ocr.pinnacleit.co.in/test/",
-    "http://localhost",
-    "http://localhost:8000",
-  
-]
+origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
@@ -33,7 +27,13 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
+origins = [
+    "https://ocr.pinnacleit.co.in/test/",
+    "https://ocr.pinnacleit.co.in/file/",
+     "http://localhost",
+    "http://localhost:8",
+  
+]
 
 @app.get("/test/")
 async def root():
@@ -75,9 +75,7 @@ async def create_upload_file(file: UploadFile = File(...)):
             img = await file.read()
 
         # Call Amazon Textract
-            # response = client.analysize_documents(
-            #     Document={'Bytes': img}
-            #     )
+            
     
             response = client.analyze_document(
                 Document={'Bytes': img},
